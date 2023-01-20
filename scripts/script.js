@@ -54,6 +54,11 @@ const Game = (() => {
   const player1 = Player('X');
   const player2 = Player('O');
   let currentPlayer = player1;
+  const winningCombos = [
+    [0,1,2], [3,4,5], [6,7,8], // Rows
+    [0,3,6], [1,4,7], [2,5,8], // Cols
+    [0,4,8], [2,4,6] // Diagonals
+  ]
   // All game logic
   // In change of the logic behind the game
   
@@ -75,8 +80,6 @@ const Game = (() => {
 
       currentPlayer = switchPlayers();
     };
-     // I want to first check if the move is valid!
-    // Check Win Condition
   };
 
 
