@@ -2,6 +2,13 @@ const  GameBoard = (() => {
   "use strict";
   
   const boardArray = Array(9).fill(null);
+  const symbolAt = (location) => boardArray[location];
+
+  const isFull = () => { 
+    if (availablePositions().length == 0) {
+      return true;
+    };
+  };
   
   const availablePositions = () => {
     let out = []
@@ -14,16 +21,21 @@ const  GameBoard = (() => {
     return out;
   };
 
+
+
   function placePiece(symbol, location) {
     boardArray[location] = symbol
     // Method for updating cell at location
-    DisplayController.updateCell(location, symbol) // Update the inner HTML of the cell in question
   };
+
   
 
   return {
     availablePositions,
-    placePiece
+    placePiece,
+    symbolAt,
+    boardArray,
+    isFull
   };
 
 })();
@@ -39,7 +51,7 @@ const DisplayController = (() => {
     cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
   });
 
-  const updateCell = (location, symbol) => {
+  const updateCell = (symbol, location) => {
     cell = cells[location];
     cell.textContent = symbol;
   };
@@ -77,24 +89,40 @@ const Game = (() => {
     if (GameBoard.availablePositions().includes(id)) {
 
       GameBoard.placePiece(currentPlayer.symbol, id);
+      DisplayController.updateCell(currentPlayer.symbol, id) // Update the inner HTML of the cell in question
+
+      console.log(gameOver());
 
       currentPlayer = switchPlayers();
     };
   };
 
+  const switchPlayers = () => (currentPlayer === player1 ? player2 : player1);
 
+  const gameWon = () => {
+    winningCombos.some((combo) => threeInARow(combo))
+  };
 
-  const switchPlayers = () => (currentPlayer === player1 ? player2 : player1)
+  function threeInARow(combo) {
+    return combo.every((i) => GameBoard.symbolAt(i) == currentPlayer.symbol )
+  }
 
   function gameOver() {
-    return false // Later put in logic for checking game state
-  }
+    if (gameWon()) {
+      console.log('GameOver!')
+      return true;
+    } else if (GameBoard.isFull()) {
+      console.log('Full')
+      return true;
+    };
+  };
 
   return {
     player1,
     player2,
     takeTurn,
-    currentPlayer
+    currentPlayer,
+    gameOver
   }
 
 })();
