@@ -62,10 +62,10 @@ const Game = (() => {
     // Check if the game is over
     // Switch Players
     GameBoard.placePiece(currentPlayer.symbol, cell.id)
-    switch_players()
+    currentPlayer = switchPlayers()
   };
 
-  function 
+  const switchPlayers = () => (currentPlayer === player1 ? player2 : player1)
 
   function gameOver() {
     return false // Later put in logic for checking game state
