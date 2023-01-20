@@ -1,10 +1,10 @@
-const  gameBoard = (() => {
+const  GameBoard = (() => {
   "use strict";
   
   const boardArray = Array(9).fill(null);
   
-  const available_positions = () => {
-    out = []
+  const availablePositions = () => {
+    let out = []
     for (let i = 0; i < boardArray.length; i++) {
       let element = boardArray[i];
 
@@ -14,27 +14,28 @@ const  gameBoard = (() => {
     return out;
   }
 
-  function place_piece(symbol, location) {
+  function placePiece(symbol, location) {
     boardArray[location] = symbol
+    DisplayController.cells[location].textContent = symbol
   }
   
 
   return {
-    available_positions,
-    place_piece
+    availablePositions,
+    placePiece
   };
 
 })();
 
-const player = (symbol) => {
+const Player = (symbol) => {
   return { symbol };
 }
 
-const displayController = (() => {
-
+const DisplayController = (() => {
+  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell")
   cells.forEach((cell) => {
-    cell.addEventListener("click", () => board) // Add some function which changes the inner html which will exist in the Game 
+    cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
   })
 
   
@@ -43,9 +44,37 @@ const displayController = (() => {
   }
 })();
 
-const game = (() => {
+const Game = (() => {
+  const player1 = Player('X');
+  const player2 = Player('O');
+  let currentPlayer = player1;
+  // All game logic
   // In change of the logic behind the game
   
+  function play() {
+    // Until game over, take turn
+   
+  };
 
+  function takeTurn(cell) {
+    // Let users select a piece until they select one that corresponds to a piece in the available moves
+    // Then GameBoard.placePiece there
+    // Check if the game is over
+    // Switch Players
+    GameBoard.placePiece(currentPlayer.symbol, cell.id)
+    switch_players()
+  };
+
+  function 
+
+  function gameOver() {
+    return false // Later put in logic for checking game state
+  }
+
+  return {
+    player1,
+    player2,
+    takeTurn
+  }
 
 })();
