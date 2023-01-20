@@ -61,8 +61,17 @@ const Game = (() => {
     // Then GameBoard.placePiece there
     // Check if the game is over
     // Switch Players
-    GameBoard.placePiece(currentPlayer.symbol, cell.id)
-    currentPlayer = switchPlayers()
+    console.log(GameBoard.availablePositions().includes(cell.id))
+    console.log(cell.id)
+
+    if (GameBoard.availablePositions().includes(cell.id)) {
+
+      GameBoard.placePiece(currentPlayer.symbol, cell.id);
+
+      currentPlayer = switchPlayers();
+    };
+     // I want to first check if the move is valid!
+    // Check Win Condition
   };
 
   const switchPlayers = () => (currentPlayer === player1 ? player2 : player1)
@@ -74,7 +83,8 @@ const Game = (() => {
   return {
     player1,
     player2,
-    takeTurn
+    takeTurn,
+    currentPlayer
   }
 
 })();
