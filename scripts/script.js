@@ -31,9 +31,21 @@ const player = (symbol) => {
 }
 
 const displayController = (() => {
-  // In change of creating the display and looks of the game
+
+  const cells = document.querySelectorAll(".cell")
+  cells.forEach((cell) => {
+    cell.addEventListener("click", () => board) // Add some function which changes the inner html which will exist in the Game 
+  })
+
+  
+  return {
+    cells
+  }
 })();
 
 const game = (() => {
   // In change of the logic behind the game
+  
+
+
 })();
