@@ -12,12 +12,13 @@ const  GameBoard = (() => {
     }
 
     return out;
-  }
+  };
 
   function placePiece(symbol, location) {
     boardArray[location] = symbol
-    DisplayController.cells[location].textContent = symbol
-  }
+    // Method for updating cell at location
+    DisplayController.updateCell(location, symbol) // Update the inner HTML of the cell in question
+  };
   
 
   return {
@@ -33,15 +34,20 @@ const Player = (symbol) => {
 
 const DisplayController = (() => {
   // This only deals with the state of the board's look
-  const cells = document.querySelectorAll(".cell")
+  const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
     cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
-  })
+  });
 
-  
+  const updateCell = (location, symbol) => {
+    cell = cells[location];
+    cell.textContent = symbol;
+  };
+
   return {
-    cells
-  }
+    cells,
+    updateCell
+  };
 })();
 
 const Game = (() => {
@@ -61,18 +67,19 @@ const Game = (() => {
     // Then GameBoard.placePiece there
     // Check if the game is over
     // Switch Players
-    console.log(GameBoard.availablePositions().includes(cell.id))
-    console.log(cell.id)
+    id = parseInt(cell.id)
 
-    if (GameBoard.availablePositions().includes(cell.id)) {
+    if (GameBoard.availablePositions().includes(id)) {
 
-      GameBoard.placePiece(currentPlayer.symbol, cell.id);
+      GameBoard.placePiece(currentPlayer.symbol, id);
 
       currentPlayer = switchPlayers();
     };
      // I want to first check if the move is valid!
     // Check Win Condition
   };
+
+
 
   const switchPlayers = () => (currentPlayer === player1 ? player2 : player1)
 
