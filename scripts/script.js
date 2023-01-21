@@ -52,7 +52,7 @@ const DisplayController = (() => {
   const announcementDiv = document.getElementById("announcement");
 
   const declareWinner = (player) => announcementDiv.textContent = `${player.symbol} Wins!`;
-  const declareTie = () => announcementDiv.textContent = `Its a tie!`
+  const declareTie = () => announcementDiv.textContent = `Its a tie!`;
 
   const updateCell = (symbol, location) => {
     cell = cells[location];
@@ -69,21 +69,22 @@ const DisplayController = (() => {
 const Game = (() => {
   const player1 = Player('X');
   const player2 = Player('O');
-  // const gameOver = false;
-  let currentPlayer = player1;
+  let currentPlayer;
   const winningCombos = [
     [0,1,2], [3,4,5], [6,7,8], // Rows
     [0,3,6], [1,4,7], [2,5,8], // Cols
     [0,4,8], [2,4,6] // Diagonals
-  ]
+  ];
+
+  let playing = false;
   // All game logic
   // In change of the logic behind the game
   
   function play() {
     // Until game over, take turn
-   if (gameOver === false) {
-    
-   }
+    playing = true;
+    currentPlayer = player1
+    console.log(playing)
   };
 
   function takeTurn(cell) {
@@ -91,6 +92,7 @@ const Game = (() => {
     // Then GameBoard.placePiece there
     // Check if the game is over
     // Switch Players
+    if (!playing) return;
     id = parseInt(cell.id)
 
     if (GameBoard.availablePositions().includes(id)) {
@@ -118,20 +120,19 @@ const Game = (() => {
   function gameOver() {
     if (gameWon()) {
       DisplayController.declareWinner(currentPlayer)
+      playing = false;
       return true;
     } else if (GameBoard.isFull()) {
       DisplayController.declareTie();
+      playing = false;
       return true;
     };
   };
 
   return {
-    player1,
-    player2,
+    play,
     takeTurn,
-    currentPlayer,
-    gameOver,
-    gameWon
+    playing
   }
 
 })();
