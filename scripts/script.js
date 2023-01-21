@@ -26,7 +26,7 @@ const  GameBoard = (() => {
     boardArray[location] = symbol
   };
 
-  function clear() {
+  const clear = () => {
    for (const element in boardArray) {
      boardArray[element] = null;    
    } 
@@ -68,10 +68,19 @@ const DisplayController = (() => {  // This only deals with the state of the boa
     cell.textContent = symbol;
   };
 
+  const reset = () => {
+    cells.forEach((cell) => {
+      cell.innerHTML = ""
+    });
+
+    announcementDiv.textContent = ""
+  };
+
   return {
     updateCell,
     declareWinner,
-    declareTie
+    declareTie,
+    reset
   };
 })();
 
