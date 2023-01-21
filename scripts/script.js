@@ -77,12 +77,20 @@ const EasyComputerPlayer = (symbol) => {
 const HardComputerPlayer = (symbol) => {
   const availableMoves = GameBoard.availablePositions();
   
-  function score(game) {
-    if (game.gameOver()) {
-      return 10
+  function score(game, depth) {
+    if (Game.winner(Game.player2)) {
+      return 10 - depth;
+    } else if (Game.winner(Game.player1)) {
+      return depth -10;
     } else {
-
+      return 0;
     }
+  };
+
+  function minimax(game) {
+    // Return the score if the game is over
+    // if maximizing player(i.e. player2)
+
   }
 
   return {
