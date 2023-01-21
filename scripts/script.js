@@ -38,7 +38,6 @@ const  GameBoard = (() => {
     symbolAt,
     isFull,
     clear,
-    boardArray
   };
 
 })();
