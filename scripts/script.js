@@ -16,13 +16,12 @@ const  GameBoard = (() => {
       let element = boardArray[i];
 
       if (element === null) out.push(i);
-    }
+    };
 
     return out;
   };
 
-
-
+  
   function placePiece(symbol, location) {
     boardArray[location] = symbol
     // Method for updating cell at location
@@ -51,6 +50,11 @@ const DisplayController = (() => {
     cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
   });
 
+  const announcementDiv = document.getElementById("announcement");
+
+  const announceWinner = (player) => announcementDiv.textContent = `${player.symbol} Wins!`;
+
+
   const updateCell = (symbol, location) => {
     cell = cells[location];
     cell.textContent = symbol;
@@ -58,7 +62,8 @@ const DisplayController = (() => {
 
   return {
     cells,
-    updateCell
+    updateCell,
+    announceWinner
   };
 })();
 
@@ -91,7 +96,9 @@ const Game = (() => {
       GameBoard.placePiece(currentPlayer.symbol, id);
       DisplayController.updateCell(currentPlayer.symbol, id) // Update the inner HTML of the cell in question
 
-      console.log(gameOver());
+      if (gameOver()) {
+        return
+      };
 
       currentPlayer = switchPlayers();
     };
@@ -99,20 +106,19 @@ const Game = (() => {
 
   const switchPlayers = () => (currentPlayer === player1 ? player2 : player1);
 
-  const gameWon = () => {
-    winningCombos.some((combo) => threeInARow(combo))
-  };
+  const gameWon = () => winningCombos.some((combo) => threeInARow(combo));
+
 
   function threeInARow(combo) {
-    return combo.every((i) => GameBoard.symbolAt(i) == currentPlayer.symbol )
+    return combo.every((i) => GameBoard.symbolAt(i) == currentPlayer.symbol );
   }
 
   function gameOver() {
     if (gameWon()) {
-      console.log('GameOver!')
+      DisplayController.announceWinner(currentPlayer)
       return true;
     } else if (GameBoard.isFull()) {
-      console.log('Full')
+      DisplayController.tie();
       return true;
     };
   };
@@ -122,7 +128,8 @@ const Game = (() => {
     player2,
     takeTurn,
     currentPlayer,
-    gameOver
+    gameOver,
+    gameWon
   }
 
 })();
