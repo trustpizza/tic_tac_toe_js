@@ -23,7 +23,7 @@ const  GameBoard = (() => {
 
   
   function placePiece(symbol, location) { 
-    boardArray[location] = symbol
+    boardArray[location] = symbol;
   };
 
   const clear = () => {
@@ -42,8 +42,9 @@ const  GameBoard = (() => {
 
 })();
 
-const Player = (symbol) => {
-  return { symbol };
+const Player = (symbol, type = 'human-player') => {
+    
+  return { symbol, type };
 }
 
 const DisplayController = (() => {  // This only deals with the state of the board's look
@@ -60,14 +61,24 @@ const DisplayController = (() => {  // This only deals with the state of the boa
     Game.play() 
   });
 
+  const opponentSelectionSection = document.getElementsByName('player-selection');
+
+  opponentSelectionSection.forEach((selection) => {
+    selection.addEventListener("click", () => {
+      Game.setPlayer2(selection.value);
+    });
+  })
+
+
   const declareWinner = (player) => {
     announcementContainer.classList.add("visible")
     announcementDiv.textContent = `${player.symbol} Wins!`
     announcementContainer.addEventListener("click", () => {
-      announcementContainer.classList.remove("visible")
+    announcementContainer.classList.remove("visible")
 
     });
   };
+
   const declareTie = () => {
     announcementDiv.textContent = `Its a tie!`
   };
@@ -89,13 +100,15 @@ const DisplayController = (() => {  // This only deals with the state of the boa
     updateCell,
     declareWinner,
     declareTie,
-    reset
+    reset,
+    opponentSelectionSection
   };
 })();
 
 const Game = (() => {
   const player1 = Player('X');
   const player2 = Player('O');
+
   let currentPlayer;
   const winningCombos = [
     [0,1,2], [3,4,5], [6,7,8], // Rows
@@ -105,6 +118,11 @@ const Game = (() => {
 
   let playing = false;
   
+  const setPlayer2 = (value) => {
+    player2.type = value
+    console.log(player2)
+  };
+
   function play() {
     playing = true;
     currentPlayer = player1;
@@ -157,7 +175,10 @@ const Game = (() => {
   return {
     play,
     takeTurn,
-    playing
+    playing,
+    player1,
+    player2,
+    setPlayer2
   }
 
 })();
