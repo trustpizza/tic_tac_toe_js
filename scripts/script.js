@@ -77,7 +77,13 @@ const EasyComputerPlayer = (symbol) => {
 const HardComputerPlayer = (symbol) => {
   const availableMoves = GameBoard.availablePositions();
   
-  
+  function score(game) {
+    if (game.gameOver()) {
+      return 10
+    } else {
+
+    }
+  }
 
   return {
     symbol
@@ -207,10 +213,9 @@ const Game = (() => {
 
   const gameWon = () => winningCombos.some((combo) => threeInARow(combo));
 
-
   function threeInARow(combo) {
     return combo.every((i) => GameBoard.symbolAt(i) == Game.currentPlayer.symbol );
-  }
+  };
 
   function gameOver() {
     if (gameWon()) {
@@ -224,6 +229,14 @@ const Game = (() => {
     };
   };
 
+  const winner = (player) => {
+    if (gameOver() && Game.currentPlayer == player) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   return {
     player1,
     player2,
@@ -235,7 +248,8 @@ const Game = (() => {
     takeTurn,
     gameOver,
     resetGame,
-    gameWon
+    gameWon,
+    winner
   }
 
 })();
