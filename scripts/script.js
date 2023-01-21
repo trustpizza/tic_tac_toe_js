@@ -42,9 +42,9 @@ const  GameBoard = (() => {
 
 })();
 
-const Player = (symbol, type = 'human-player') => {
+const HumanPlayer = (symbol) => {
     
-  return { symbol, type };
+  return { symbol};
 }
 
 const DisplayController = (() => {  // This only deals with the state of the board's look
@@ -62,13 +62,11 @@ const DisplayController = (() => {  // This only deals with the state of the boa
   });
 
   const opponentSelectionSection = document.getElementsByName('player-selection');
-
   opponentSelectionSection.forEach((selection) => {
-    selection.addEventListener("click", () => {
-      Game.setPlayer2(selection.value);
-    });
-  })
-
+      selection.addEventListener("click", () => {
+          Game.setPlayer2(selection.value);
+      });
+  });
 
   const declareWinner = (player) => {
     announcementContainer.classList.add("visible")
@@ -106,10 +104,10 @@ const DisplayController = (() => {  // This only deals with the state of the boa
 })();
 
 const Game = (() => {
-  const player1 = Player('X');
-  const player2 = Player('O');
+  const player1 = HumanPlayer('X');
+  let player2;
 
-  let currentPlayer;
+  let currentPlayer = player1;
   const winningCombos = [
     [0,1,2], [3,4,5], [6,7,8], // Rows
     [0,3,6], [1,4,7], [2,5,8], // Cols
@@ -118,10 +116,12 @@ const Game = (() => {
 
   let playing = false;
   
-  const setPlayer2 = (value) => {
-    player2.type = value
-    console.log(player2)
-  };
+  const setPlayer2 = (value) => {   
+    if (value === "human") {
+      console.log(value)
+      Game.player2 = HumanPlayer('O');
+    };
+  }
 
   function play() {
     playing = true;
@@ -151,7 +151,7 @@ const Game = (() => {
     DisplayController.reset();
   }
 
-  const switchPlayers = () => (currentPlayer === player1 ? player2 : player1);
+  const switchPlayers = () => (currentPlayer === player1 ? Game.player2 : player1);
 
   const gameWon = () => winningCombos.some((combo) => threeInARow(combo));
 
@@ -173,12 +173,16 @@ const Game = (() => {
   };
 
   return {
-    play,
-    takeTurn,
-    playing,
     player1,
     player2,
-    setPlayer2
+    currentPlayer,
+    winningCombos,
+    playing,
+    setPlayer2,
+    play,
+    takeTurn,
+    gameOver,
+    resetGame
   }
 
 })();
