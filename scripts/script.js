@@ -43,12 +43,14 @@ const  GameBoard = (() => {
 })();
 
 const HumanPlayer = (symbol) => {
-    
-  return { symbol};
+  const isCPU = false;  
+  return { symbol, isCPU };
 }
 
 const EasyComputerPlayer = (symbol) => {
   // If Game.currentPlayer == self, then take a random entry from GameBoard.availableMoves();
+  const isCPU = true;
+
   const checkIfTurn = () => {
     if (Game.currentPlayer === Game.player2) {
       return true
@@ -67,7 +69,8 @@ const EasyComputerPlayer = (symbol) => {
   return {
     symbol,
     checkIfTurn,
-    takeTurn
+    takeTurn,
+    isCPU
   }
 };
 
@@ -104,7 +107,7 @@ const DisplayController = (() => {  // This only deals with the state of the boa
   const declareTie = () => {
     announcementContainer.classList.add("visible");
     announcementDiv.textContent = `Its a tie!`;
-    
+
     announcementContainer.addEventListener("click", () => {
       announcementContainer.classList.remove("visible")
     });
@@ -150,9 +153,11 @@ const Game = (() => {
     if (value === "human") {
       console.log(value)
       Game.player2 = HumanPlayer('O');
-    } else if (value === 'computer') {
+    } else if (value === 'easy-computer') {
       console.log(value)
       Game.player2 = EasyComputerPlayer('O')
+    } else if (value === 'hard-computer') {
+      console.log(value)
     }
   }
 
@@ -177,9 +182,9 @@ const Game = (() => {
 
       Game.currentPlayer = switchPlayers();
 
-      if (Game.player2.checkIfTurn()) {
-        Game.player2.takeTurn();
-      }
+      if (Game.player2.isCPU && Game.player2.checkIfTurn()) {
+          Game.player2.takeTurn();
+      };
 
     };
   };
