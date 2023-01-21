@@ -11,3 +11,8 @@
   width: 70vh;
   height: 70vh;
 }
+
+#start-button {
+  height: 50px;
+  width: 50px;
+}

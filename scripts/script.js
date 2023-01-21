@@ -51,6 +51,12 @@ const DisplayController = (() => {
 
   const announcementDiv = document.getElementById("announcement");
 
+  const startButton = document.getElementById("start-button");
+  startButton.addEventListener("click", () => {
+    // Start Game upon Click
+    Game.play() 
+  });
+
   const declareWinner = (player) => announcementDiv.textContent = `${player.symbol} Wins!`;
   const declareTie = () => announcementDiv.textContent = `Its a tie!`;
 
@@ -83,8 +89,8 @@ const Game = (() => {
   function play() {
     // Until game over, take turn
     playing = true;
-    currentPlayer = player1
-    console.log(playing)
+    currentPlayer = player1;
+    resetGame()
   };
 
   function takeTurn(cell) {
@@ -107,6 +113,11 @@ const Game = (() => {
       currentPlayer = switchPlayers();
     };
   };
+
+  function resetGame() {
+    GameBoard.clear();
+    
+  }
 
   const switchPlayers = () => (currentPlayer === player1 ? player2 : player1);
 
