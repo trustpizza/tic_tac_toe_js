@@ -49,17 +49,25 @@ const HumanPlayer = (symbol) => {
 
 const EasyComputerPlayer = (symbol) => {
   // If Game.currentPlayer == self, then take a random entry from GameBoard.availableMoves();
-  function checkIfTurn() {
+  const checkIfTurn = () => {
     if (Game.currentPlayer === Game.player2) {
-      console.log('Yes');
-    } else {
-      console.log('No');
+      return true
     };
+  };
+
+  const takeTurn = () => {
+    const availableMoves = GameBoard.availablePositions();
+    const randomIndex = Math.floor(Math.random() * availableMoves.length);
+    const move = availableMoves[randomIndex];
+    const cell = DisplayController.cells[move];
+
+    Game.takeTurn(cell);
   };
 
   return {
     symbol,
-    checkIfTurn
+    checkIfTurn,
+    takeTurn
   }
 };
 
@@ -94,7 +102,12 @@ const DisplayController = (() => {  // This only deals with the state of the boa
   };
 
   const declareTie = () => {
-    announcementDiv.textContent = `Its a tie!`
+    announcementContainer.classList.add("visible");
+    announcementDiv.textContent = `Its a tie!`;
+    
+    announcementContainer.addEventListener("click", () => {
+      announcementContainer.classList.remove("visible")
+    });
   };
 
   const updateCell = (symbol, location) => {
@@ -115,7 +128,8 @@ const DisplayController = (() => {  // This only deals with the state of the boa
     declareWinner,
     declareTie,
     reset,
-    opponentSelectionSection
+    opponentSelectionSection,
+    cells
   };
 })();
 
@@ -162,6 +176,11 @@ const Game = (() => {
       };
 
       Game.currentPlayer = switchPlayers();
+
+      if (Game.player2.checkIfTurn()) {
+        Game.player2.takeTurn();
+      }
+
     };
   };
 
@@ -176,12 +195,12 @@ const Game = (() => {
 
 
   function threeInARow(combo) {
-    return combo.every((i) => GameBoard.symbolAt(i) == currentPlayer.symbol );
+    return combo.every((i) => GameBoard.symbolAt(i) == Game.currentPlayer.symbol );
   }
 
   function gameOver() {
     if (gameWon()) {
-      DisplayController.declareWinner(currentPlayer)
+      DisplayController.declareWinner(Game.currentPlayer)
       playing = false;
       return true;
     } else if (GameBoard.isFull()) {
@@ -201,7 +220,8 @@ const Game = (() => {
     play,
     takeTurn,
     gameOver,
-    resetGame
+    resetGame,
+    gameWon
   }
 
 })();
