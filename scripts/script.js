@@ -59,8 +59,12 @@ const DisplayController = (() => {  // This only deals with the state of the boa
     Game.play() 
   });
 
-  const declareWinner = (player) => announcementDiv.textContent = `${player.symbol} Wins!`;
-  const declareTie = () => announcementDiv.textContent = `Its a tie!`;
+  const declareWinner = (player) => {
+    announcementDiv.textContent = `${player.symbol} Wins!`
+  };
+  const declareTie = () => {
+    announcementDiv.textContent = `Its a tie!`
+  };
 
   const updateCell = (symbol, location) => {
     cell = cells[location];
