@@ -47,6 +47,22 @@ const HumanPlayer = (symbol) => {
   return { symbol};
 }
 
+const EasyComputerPlayer = (symbol) => {
+  // If Game.currentPlayer == self, then take a random entry from GameBoard.availableMoves();
+  function checkIfTurn() {
+    if (Game.currentPlayer === Game.player2) {
+      console.log('Yes');
+    } else {
+      console.log('No');
+    };
+  };
+
+  return {
+    symbol,
+    checkIfTurn
+  }
+};
+
 const DisplayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
@@ -120,12 +136,15 @@ const Game = (() => {
     if (value === "human") {
       console.log(value)
       Game.player2 = HumanPlayer('O');
-    };
+    } else if (value === 'computer') {
+      console.log(value)
+      Game.player2 = EasyComputerPlayer('O')
+    }
   }
 
   function play() {
     playing = true;
-    currentPlayer = player1;
+    Game.currentPlayer = player1;
     resetGame()
   };
 
@@ -135,14 +154,14 @@ const Game = (() => {
 
     if (GameBoard.availablePositions().includes(id)) {
 
-      GameBoard.placePiece(currentPlayer.symbol, id);
-      DisplayController.updateCell(currentPlayer.symbol, id) // Update the inner HTML of the cell in question
+      GameBoard.placePiece(Game.currentPlayer.symbol, id);
+      DisplayController.updateCell(Game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
 
       if (gameOver()) {
         return
       };
 
-      currentPlayer = switchPlayers();
+      Game.currentPlayer = switchPlayers();
     };
   };
 
@@ -151,7 +170,7 @@ const Game = (() => {
     DisplayController.reset();
   }
 
-  const switchPlayers = () => (currentPlayer === player1 ? Game.player2 : player1);
+  const switchPlayers = () => (Game.currentPlayer === player1 ? Game.player2 : player1);
 
   const gameWon = () => winningCombos.some((combo) => threeInARow(combo));
 
