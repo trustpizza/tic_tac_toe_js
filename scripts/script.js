@@ -74,6 +74,16 @@ const EasyComputerPlayer = (symbol) => {
   }
 };
 
+const HardComputerPlayer = (symbol) => {
+  const availableMoves = GameBoard.availablePositions();
+  
+  
+
+  return {
+    symbol
+  }
+}
+
 const DisplayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
@@ -151,25 +161,24 @@ const Game = (() => {
   
   const setPlayer2 = (value) => {   
     if (value === "human") {
-      console.log(value)
       Game.player2 = HumanPlayer('O');
     } else if (value === 'easy-computer') {
-      console.log(value)
-      Game.player2 = EasyComputerPlayer('O')
+      Game.player2 = EasyComputerPlayer('O');
     } else if (value === 'hard-computer') {
       console.log(value)
+      Game.player2 = HardComputerPlayer('O')
     }
   }
 
   function play() {
     playing = true;
     Game.currentPlayer = player1;
-    resetGame()
+    resetGame();
   };
 
   function takeTurn(cell) {
     if (!playing) return;
-    id = parseInt(cell.id)
+    id = parseInt(cell.id);
 
     if (GameBoard.availablePositions().includes(id)) {
 
