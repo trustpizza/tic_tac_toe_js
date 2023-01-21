@@ -33,7 +33,6 @@ const  GameBoard = (() => {
     availablePositions,
     placePiece,
     symbolAt,
-    boardArray,
     isFull
   };
 
@@ -52,8 +51,8 @@ const DisplayController = (() => {
 
   const announcementDiv = document.getElementById("announcement");
 
-  const announceWinner = (player) => announcementDiv.textContent = `${player.symbol} Wins!`;
-
+  const declareWinner = (player) => announcementDiv.textContent = `${player.symbol} Wins!`;
+  const declareTie = () => announcementDiv.textContent = `Its a tie!`
 
   const updateCell = (symbol, location) => {
     cell = cells[location];
@@ -61,15 +60,16 @@ const DisplayController = (() => {
   };
 
   return {
-    cells,
     updateCell,
-    announceWinner
+    declareWinner,
+    declareTie
   };
 })();
 
 const Game = (() => {
   const player1 = Player('X');
   const player2 = Player('O');
+  // const gameOver = false;
   let currentPlayer = player1;
   const winningCombos = [
     [0,1,2], [3,4,5], [6,7,8], // Rows
@@ -81,7 +81,9 @@ const Game = (() => {
   
   function play() {
     // Until game over, take turn
-   
+   if (gameOver === false) {
+    
+   }
   };
 
   function takeTurn(cell) {
@@ -115,10 +117,10 @@ const Game = (() => {
 
   function gameOver() {
     if (gameWon()) {
-      DisplayController.announceWinner(currentPlayer)
+      DisplayController.declareWinner(currentPlayer)
       return true;
     } else if (GameBoard.isFull()) {
-      DisplayController.tie();
+      DisplayController.declareTie();
       return true;
     };
   };
