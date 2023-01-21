@@ -52,6 +52,7 @@ const DisplayController = (() => {  // This only deals with the state of the boa
     cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
   });
 
+  const announcementContainer = document.getElementById("announcement-container")
   const announcementDiv = document.getElementById("announcement");
 
   const startButton = document.getElementById("start-button");
@@ -60,6 +61,7 @@ const DisplayController = (() => {  // This only deals with the state of the boa
   });
 
   const declareWinner = (player) => {
+    announcementContainer.classList.add("visible")
     announcementDiv.textContent = `${player.symbol} Wins!`
   };
   const declareTie = () => {
