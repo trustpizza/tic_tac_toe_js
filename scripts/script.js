@@ -27,13 +27,19 @@ const  GameBoard = (() => {
     // Method for updating cell at location
   };
 
-  
+  function clear() {
+   for (const element in boardArray) {
+     boardArray[element] = null;    
+   } 
+  }
 
   return {
     availablePositions,
     placePiece,
     symbolAt,
-    isFull
+    isFull,
+    clear,
+    boardArray
   };
 
 })();
@@ -116,7 +122,7 @@ const Game = (() => {
 
   function resetGame() {
     GameBoard.clear();
-    
+
   }
 
   const switchPlayers = () => (currentPlayer === player1 ? player2 : player1);
