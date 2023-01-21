@@ -22,9 +22,8 @@ const  GameBoard = (() => {
   };
 
   
-  function placePiece(symbol, location) {
+  function placePiece(symbol, location) { 
     boardArray[location] = symbol
-    // Method for updating cell at location
   };
 
   function clear() {
@@ -48,8 +47,7 @@ const Player = (symbol) => {
   return { symbol };
 }
 
-const DisplayController = (() => {
-  // This only deals with the state of the board's look
+const DisplayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
     cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
@@ -59,7 +57,6 @@ const DisplayController = (() => {
 
   const startButton = document.getElementById("start-button");
   startButton.addEventListener("click", () => {
-    // Start Game upon Click
     Game.play() 
   });
 
@@ -89,21 +86,14 @@ const Game = (() => {
   ];
 
   let playing = false;
-  // All game logic
-  // In change of the logic behind the game
   
   function play() {
-    // Until game over, take turn
     playing = true;
     currentPlayer = player1;
     resetGame()
   };
 
   function takeTurn(cell) {
-    // Let users select a piece until they select one that corresponds to a piece in the available moves
-    // Then GameBoard.placePiece there
-    // Check if the game is over
-    // Switch Players
     if (!playing) return;
     id = parseInt(cell.id)
 
@@ -122,7 +112,7 @@ const Game = (() => {
 
   function resetGame() {
     GameBoard.clear();
-
+    DisplayController.reset();
   }
 
   const switchPlayers = () => (currentPlayer === player1 ? player2 : player1);
