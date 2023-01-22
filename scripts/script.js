@@ -77,10 +77,18 @@ const easyComputerPlayer = (symbol) => {
 };
 
 const hardComputerPlayer = (symbol) => {
+    const isCPU = true;
+
+    const checkIfTurn = () => {
+      if (game.currentPlayer === game.player2) {
+        return true
+      };
+    };
+
     const winningCombos = game.winningCombos;
     const isWinningState = (gameBoard) => {
       winningCombos.some((combo) => threeInARow(combo));
-
+      
       function threeInARow(combo) {
         if (combo.every((i) => gameBoard.symbolAt(i) == "X")) {
           return "humanWin";
@@ -154,7 +162,9 @@ const hardComputerPlayer = (symbol) => {
 
   return {
     symbol,
-    takeTurn
+    takeTurn,
+    isCPU,
+    checkIfTurn
   }
 }
 
