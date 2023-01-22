@@ -12,15 +12,17 @@
 <body>
 
   <div class="container">
-    <button id="start-button">Start Game</button>
-      <div id="player-selection">
-        <input type="radio" id="human-player" name="player-selection" value="human">
-        <label for="human-player">Human Player</label>
-        <input type="radio" id="easy-computer-player" name="player-selection" value="easy-computer">
-        <label for="easy-computer-player">Easy Computer Player</label>
-        <input type="radio" id="hard-computer-player" name="player-selection" value="hard-computer">
-        <label for="hard-computer-player">Impossible Computer Player</label>
-      </div>
+    <div class="start">
+      <button id="start-button">Start Game</button>
+        <div id="player-selection">
+          <input type="radio" id="human-player" name="player-selection" value="human">
+          <label for="human-player">Human Player</label>
+          <input type="radio" id="easy-computer-player" name="player-selection" value="easy-computer">
+          <label for="easy-computer-player">Easy Computer Player</label>
+          <input type="radio" id="hard-computer-player" name="player-selection" value="hard-computer">
+          <label for="hard-computer-player">Impossible Computer Player</label>
+        </div>
+    </div>
     <div class="game-container">
       <button class="cell" id="0"></button>
       <button class="cell" id="1"></button>
@@ -36,6 +38,9 @@
   <div id="announcement-container">
     <div id="announcement"></div>
   </div>
+
+  <footer id="footer">
+  </footer>
 
 </body>
 </html>
