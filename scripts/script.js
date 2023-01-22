@@ -112,10 +112,11 @@ const hardComputerPlayer = (symbol) => {
         return {score: -10};
       } else if (!newBoard.includes(null)) {
         console.log(0)
-        return 0;
+        return {score: 0};
       };
 
       let moves = [];
+
       for (let i = 0; i < availablePositions.length; i++) {
         let move = {};
         move.index = availablePositions[i];
@@ -126,10 +127,12 @@ const hardComputerPlayer = (symbol) => {
           move.score = result.score;
         } else {
           newBoard[availablePositions[i]] = "Y";
+          console.log(newBoard)
           let result = minimax(newBoard, !maximizingPlayer);
           console.log(result)
           move.score = result.score;
         };
+      };
 
         let bestMove;
         if (maximizingPlayer) {
@@ -157,7 +160,7 @@ const hardComputerPlayer = (symbol) => {
     };
     
   const takeTurn = () => {
-    const index = minimax(gameBoard.boardArray, false);
+    const index = minimax(JSON.parse(JSON.stringify(gameBoard.boardArray)), false);
     console.log(index)
     //const cell = displayController.cells[index];
     //game.takeTurn(cell);
