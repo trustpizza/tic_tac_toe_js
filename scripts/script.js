@@ -81,6 +81,7 @@ const easyComputerPlayer = (symbol) => {
 //
 //
 //
+/*
 const hardComputerPlayer = (symbol) => {
   const isCPU = true;
 
@@ -93,23 +94,20 @@ const hardComputerPlayer = (symbol) => {
   const winningCombos = game.winningCombos;
 
   const isWinningState = (gameBoard) => {
-    let response;
-    winningCombos.forEach(combo => {
+    let response = false;
+    winningCombos.some(combo => {
       if (combo.every((i) => gameBoard[i] == "X")) {
         response = "humanWin"
-        return "humanWin";
+        // return true;
       } else if (combo.every((i) => gameBoard[i] == "O")) {
         response = "computerWin"
-        return "computerWin";
+        // return true;
       }
     });
 
-    if ((response === "humanWin") || (response ==="computerWin")) {
-      return response
-    } else {
-      return false;
-    }
+    return response;
   };
+
 
   const minimax = (newBoard, maximizingPlayer) => {
     let availablePositions = [];
@@ -118,10 +116,11 @@ const hardComputerPlayer = (symbol) => {
       if (newBoard[i] === null) availablePositions.push(i);
     };
 
+
     if (isWinningState(newBoard) === "humanWin") {
-      return {score: 10};
+      return {score: 1};
     } else if (isWinningState(newBoard) === "computerWin") {
-      return {score: -10};
+      return {score: -1};
     } else if (!newBoard.includes(null)) {
       return {score: 0};
     };
@@ -160,17 +159,18 @@ const hardComputerPlayer = (symbol) => {
 
       for (let i = 0; i < moves.length; i++) {
         if (moves[i].score < bestScore) {
+          console.log(moves[i])
           bestScore = moves[i].score;
           bestMove = i;
         }
       }
     };
-
-    return moves[bestMove];
+    console.log(newBoard)
+    return moves[bestMove].index;
   };  
 
   const takeTurn = () => {
-    const index = minimax(JSON.parse(JSON.stringify(gameBoard.boardArray)), false).index;
+    const index = minimax(JSON.parse(JSON.stringify(gameBoard.boardArray)), false);
     console.log(index)
     //const cell = displayController.cells[index];
     //game.takeTurn(cell);
@@ -186,7 +186,106 @@ const hardComputerPlayer = (symbol) => {
     winningCombos
   }
 };
-   
+*/
+const hardComputerPlayer = (symbol) => {
+  const isCPU = true;
+
+  const checkIfTurn = () => {
+    if (game.currentPlayer === game.player2) {
+      return true;
+    }
+  };
+
+  const checkWin = (board) => {
+    const winningCombinations = [    
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
+    for (let i = 0; i < winningCombinations.length; i++) {
+      const [a, b, c] = winningCombinations[i];
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];
+      }
+    }
+    return null;
+  }
+
+  const minimax = (newBoard, maximizingPlayer) => {
+    let availablePositions = [];
+    
+    for (let i = 0; i < newBoard.length; i++) {
+      if (newBoard[i] === null) availablePositions.push(i);
+    };
+
+    if (checkWin(newBoard) === "X") {
+      return {score: 1};
+    } else if (checkWin(newBoard) === "O") {
+      return {score: -1};
+    } else if (availablePositions.length === 0) {
+      return {score: 0};
+    }
+  
+
+    let moves = [];
+
+    for (let i = 0; i < availablePositions.length; i++) {
+        let move = {};
+        move.index = availablePositions[i];
+
+        newBoard[availablePositions[i]] = maximizingPlayer ? 'X' : 'O';
+        let result = minimax(newBoard, !maximizingPlayer);
+        move.score = result.score;
+
+        newBoard[availablePositions[i]] = null;
+        moves.push(move);
+    }
+
+    let bestMove;
+
+    if (maximizingPlayer) {
+        let bestScore = -Infinity;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score > bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+    } else {
+        let bestScore = Infinity;
+        for (let i = 0; i < moves.length; i++) {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score;
+                bestMove = i;
+            }
+        }
+    }
+
+    return moves[bestMove];
+}
+
+
+  const takeTurn = () => {
+    const index = minimax(JSON.parse(JSON.stringify(gameBoard.boardArray)), false).index;
+    const cell = displayController.cells[index];
+    game.takeTurn(cell);
+  }
+
+  return {
+    symbol,
+    takeTurn,
+    isCPU,
+    checkIfTurn,
+    minimax,
+    checkWin
+  }
+};
+
+
+
+
+
+
 const displayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
