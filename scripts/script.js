@@ -244,14 +244,13 @@ const game = ((board) => {
   const setPlayer2 = (value) => {   
     if (value === "human") {
       game.player2 = humanPlayer('O');
-      game.play
     } else if (value === 'easy-computer') {
       game.player2 = easyComputerPlayer('O');
-      game.play
     } else if (value === 'hard-computer') {
       game.player2 = hardComputerPlayer('O');
-      game.play
     }
+    game.play()
+
   }
 
   function play() {

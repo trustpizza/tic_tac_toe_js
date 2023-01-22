@@ -3,7 +3,7 @@ body {
   height: 100vh;
   display: grid;
   grid-template-rows: 1fr 75px;
-  background-color: #151515;
+  background-color: #fff;
 }
 
 .container {
@@ -22,9 +22,9 @@ body {
 }
 
 .cell {
-  border: 1px solid #03C988;
+  border: 1px solid black;
   border-radius: 0%;
-  background-color: #151515;
+  background-color: #fff;
   font-size: 50pt;
 }
 
@@ -32,7 +32,7 @@ body {
   background-color: lightgrey;
 }
 
-#start-button {
+.btn {
   background-color: #2ea44f;
   border: 1px solid rgba(27, 31, 35, .15);
   border-radius: 6px;
@@ -44,28 +44,28 @@ body {
   text-align: center;
 }
 
-#start-button:focus:not(:focus-visible):not(.focus-visible) {
+.btn:focus:not(:focus-visible):not(.focus-visible) {
   box-shadow: none;
   outline: none;
 }
 
-#start-button:hover {
+.btn:hover {
   background-color: #2c974b;
 }
 
-#start-button:focus {
+.btn:focus {
   box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
   outline: none;
 }
 
-#start-button:disabled {
+.btn:disabled {
   background-color: #94d3a2;
   border-color: rgba(27, 31, 35, .1);
   color: rgba(255, 255, 255, .8);
   cursor: default;
 }
 
-#start-button:active {
+#btn:active {
   background-color: #298e46;
   box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
 }
