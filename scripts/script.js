@@ -113,7 +113,7 @@ const hardComputerPlayer = (symbol) => {
           // bestMove = i
     // return moves[bestMove]
     const winningCombos = game.winningCombos;
-    const isWinningState = () => {
+    const isWinningState = (gameBoard) => {
       winningCombos.some((combo) => threeInARow(combo));
 
       function threeInARow(combo) {
@@ -126,14 +126,21 @@ const hardComputerPlayer = (symbol) => {
       return false;
     };
 
-    const minimax = () => (newBoard, maximizingPlayer) {
+    const minimax = (newBoard, maximizingPlayer) => {
       availablePositions = [];
 
       for (let i = 0; i < newBoard.length; i++) {
         if (newBoard[i] === null) availablePositions.push(i);
       };
 
-      
+      if (isWinningState(newBoard) === "humanWin") {
+        return {score: 10};
+      } else if (isWinningState(newBoard) === "computerWin") {
+        return {score: -10}
+      } else if (newBoard.includes(null)) {
+        return {score: 0}
+      }
+
     }
   
 
