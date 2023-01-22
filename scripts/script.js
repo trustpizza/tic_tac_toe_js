@@ -77,42 +77,6 @@ const easyComputerPlayer = (symbol) => {
 };
 
 const hardComputerPlayer = (symbol) => {
-  // Set winningCombos = reproduce the game's WinningCombos
-  // Write a function or method that determines if a given board state results in a win
-  // function minimax(gameBoard, maximizingPlayer)
-    // Available spots = []
-    // for i in availablespots { if newBoard[i].isNull availablespots.push(i)}
-  // if (winningState() -> human win 
-    // return {score:10} 
-  // else if winningState -> cPU win
-    // return {score -10}
-  // else if Tie return score:0
-
-  // let moves = []
-  // Loop through every index of the available spots 
-    // let move = {}
-    // move.index = available spots [i]
-
-    // if maximizingPlayer -> newBoard[available spots][i] = X
-      // result = minimax(newBoard, !maximizingPlayer);
-      // move.score = result.score
-    // else newBoard[available spots][i] = O
-      // result = minimax(newBoard, !maximizingPlayer);
-      // move.score = result.score
-
-    // create a bestMove variable
-    // if (maximizingPlayer)
-      // let bestScore = - infinity
-      // for (i in moves.length )
-        // if moves[i] > bestScore
-          // bestScore = moves[i].score
-          // bestMove = i
-    // else 
-      // le bestScore = infinity
-        // for i in moves.length
-          // bestScore = moves[i].score
-          // bestMove = i
-    // return moves[bestMove]
     const winningCombos = game.winningCombos;
     const isWinningState = (gameBoard) => {
       winningCombos.some((combo) => threeInARow(combo));
