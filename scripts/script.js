@@ -177,17 +177,15 @@ const displayController = (() => {  // This only deals with the state of the boa
   const announcementContainer = document.getElementById("announcement-container")
   const announcementDiv = document.getElementById("announcement");
 
-  const startButton = document.getElementById("start-button");
-  startButton.addEventListener("click", () => {
-    game.play() 
+  const startButtons = document.getElementsByName("player-selection");
+
+  startButtons.forEach((selection) => {
+    selection.addEventListener("click", () => {
+        game.setPlayer2(selection.value);
+    });
   });
 
-  const opponentSelectionSection = document.getElementsByName('player-selection');
-  opponentSelectionSection.forEach((selection) => {
-      selection.addEventListener("click", () => {
-          game.setPlayer2(selection.value);
-      });
-  });
+ 
 
   const declareWinner = (player) => {
     announcementContainer.classList.add("visible")
@@ -225,8 +223,8 @@ const displayController = (() => {  // This only deals with the state of the boa
     declareWinner,
     declareTie,
     reset,
-    opponentSelectionSection,
-    cells
+    cells,
+    startButtons
   };
 })();
 
@@ -246,11 +244,13 @@ const game = ((board) => {
   const setPlayer2 = (value) => {   
     if (value === "human") {
       game.player2 = humanPlayer('O');
+      game.play
     } else if (value === 'easy-computer') {
       game.player2 = easyComputerPlayer('O');
+      game.play
     } else if (value === 'hard-computer') {
-      console.log(value)
-      game.player2 = hardComputerPlayer('O')
+      game.player2 = hardComputerPlayer('O');
+      game.play
     }
   }
 
