@@ -42,12 +42,12 @@ const  gameBoard = (() => {
 
 })();
 
-const HumanPlayer = (symbol) => {
+const humanPlayer = (symbol) => {
   const isCPU = false;  
   return { symbol, isCPU };
 }
 
-const EasyComputerPlayer = (symbol) => {
+const easyComputerPlayer = (symbol) => {
   // If game.currentPlayer == self, then take a random entry from gameBoard.availableMoves();
   const isCPU = true;
 
@@ -74,7 +74,7 @@ const EasyComputerPlayer = (symbol) => {
   }
 };
 
-const HardComputerPlayer = (symbol) => {
+const hardComputerPlayer = (symbol) => {
   const availableMoves = gameBoard.availablePositions();
   
   function gameOver() {
@@ -199,7 +199,7 @@ const DisplayController = (() => {  // This only deals with the state of the boa
 })();
 
 const game = ((board) => {
-  const player1 = HumanPlayer('X');
+  const player1 = humanPlayer('X');
   let player2;
 
   let currentPlayer = player1;
@@ -213,12 +213,12 @@ const game = ((board) => {
   
   const setPlayer2 = (value) => {   
     if (value === "human") {
-      game.player2 = HumanPlayer('O');
+      game.player2 = humanPlayer('O');
     } else if (value === 'easy-computer') {
-      game.player2 = EasyComputerPlayer('O');
+      game.player2 = easyComputerPlayer('O');
     } else if (value === 'hard-computer') {
       console.log(value)
-      game.player2 = HardComputerPlayer('O')
+      game.player2 = hardComputerPlayer('O')
     }
   }
 
