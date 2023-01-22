@@ -77,19 +77,24 @@ const EasyComputerPlayer = (symbol) => {
 const HardComputerPlayer = (symbol) => {
   const availableMoves = GameBoard.availablePositions();
   
-  function makeBestMove() {
-    let bestScore = Number.NEGATIVE_INFINITY
+  function score(game, depth) {
+    if (game.winner == player2) {
+      return 10 - depth;
+    } else if (game.winner == player1) {
+      return depth - 10;
+    } else {
+      return 0;
+    }
   }
 
   function minimax(game, depth, maximizingPlayer) {
-
     // Make the depth be equal to the ammount of available moves left
     // Return the score if the game is over
     // Increase the depth by 1
     // Create an empty array of scores for that will accumulate a score at each depth;
     // Create an array of possible moves
     // if maximizing player(i.e. player2) then 
-      // value = score(game, depth)
+      // value = - infinit
         // Look at each child of the node (i.e. each next possible gamestate) and minimax(game, depth - 1, FALSE)
       // add Value to scores array
 
