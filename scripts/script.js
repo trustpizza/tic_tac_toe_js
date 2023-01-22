@@ -64,6 +64,7 @@ const easyComputerPlayer = (symbol) => {
     const move = availableMoves[randomIndex];
     const cell = displayController.cells[move];
 
+    console.log(cell)
     game.takeTurn(cell);
   };
 
@@ -177,13 +178,19 @@ const hardComputerPlayer = (symbol) => {
           }
         };
 
-        return moves[bestMove]
+        return moves[bestMove];
       };
     };
-  
+    
+  const takeTurn = () => {
+    const index = minimax(gameBoard.boardArray, false).index;
+    const cell = displayController.cells[index];
+    game.takeTurn(cell);
+  }
 
   return {
-    symbol
+    symbol,
+    takeTurn
   }
 }
 
