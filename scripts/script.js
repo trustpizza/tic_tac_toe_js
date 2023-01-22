@@ -170,7 +170,8 @@ const hardComputerPlayer = (symbol) => {
     takeTurn,
     isCPU,
     checkIfTurn,
-    minimax
+    minimax,
+    isWinningState
   }
 };
    
