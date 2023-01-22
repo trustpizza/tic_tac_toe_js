@@ -40,7 +40,7 @@ const  GameBoard = (() => {
     clear,
   };
 
-})();
+});
 
 const HumanPlayer = (symbol) => {
   const isCPU = false;  
@@ -48,22 +48,22 @@ const HumanPlayer = (symbol) => {
 }
 
 const EasyComputerPlayer = (symbol) => {
-  // If Game.currentPlayer == self, then take a random entry from GameBoard.availableMoves();
+  // If game.currentPlayer == self, then take a random entry from board.availableMoves();
   const isCPU = true;
 
   const checkIfTurn = () => {
-    if (Game.currentPlayer === Game.player2) {
+    if (game.currentPlayer === game.player2) {
       return true
     };
   };
 
   const takeTurn = () => {
-    const availableMoves = GameBoard.availablePositions();
+    const availableMoves = board.availablePositions();
     const randomIndex = Math.floor(Math.random() * availableMoves.length);
     const move = availableMoves[randomIndex];
     const cell = DisplayController.cells[move];
 
-    Game.takeTurn(cell);
+    game.takeTurn(cell);
   };
 
   return {
@@ -75,8 +75,16 @@ const EasyComputerPlayer = (symbol) => {
 };
 
 const HardComputerPlayer = (symbol) => {
-  const availableMoves = GameBoard.availablePositions();
+  const availableMoves = board.availablePositions();
   
+  function gameOver() {
+    if (game.gameOver() || DisplayController.isFull()) {
+      return true;
+    } else {
+      return false;
+    };
+  };
+
   function score(game, depth) {
     if (game.winner == player2) {
       return 10 - depth;
@@ -87,7 +95,20 @@ const HardComputerPlayer = (symbol) => {
     }
   }
 
-  function minimax(game, depth, maximizingPlayer) {
+  function minimax(game, depth) {
+    // USE board.placePiece()!!!!! This just places the spot on the GameBoard not on the actual display!
+    // USE game.gameWon()!!!! this does not alert!
+    if (gameOver()) {
+      return score(game)
+    };
+    depth--;
+    let scores = [];
+    let moves = [];
+
+    for (let i = 0; i < board.availablePositions().length; i++) {
+      const element = board.availablePositions()[i];
+    }
+
     // Make the depth be equal to the ammount of available moves left
     // Return the score if the game is over
     // Increase the depth by 1
@@ -114,7 +135,7 @@ const HardComputerPlayer = (symbol) => {
 const DisplayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
-    cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
+    cell.addEventListener("click", () => game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
   });
 
   const announcementContainer = document.getElementById("announcement-container")
@@ -122,13 +143,13 @@ const DisplayController = (() => {  // This only deals with the state of the boa
 
   const startButton = document.getElementById("start-button");
   startButton.addEventListener("click", () => {
-    Game.play() 
+    game.play() 
   });
 
   const opponentSelectionSection = document.getElementsByName('player-selection');
   opponentSelectionSection.forEach((selection) => {
       selection.addEventListener("click", () => {
-          Game.setPlayer2(selection.value);
+          game.setPlayer2(selection.value);
       });
   });
 
@@ -188,18 +209,18 @@ const Game = (() => {
   
   const setPlayer2 = (value) => {   
     if (value === "human") {
-      Game.player2 = HumanPlayer('O');
+      game.player2 = HumanPlayer('O');
     } else if (value === 'easy-computer') {
-      Game.player2 = EasyComputerPlayer('O');
+      game.player2 = EasyComputerPlayer('O');
     } else if (value === 'hard-computer') {
       console.log(value)
-      Game.player2 = HardComputerPlayer('O')
+      game.player2 = HardComputerPlayer('O')
     }
   }
 
   function play() {
     playing = true;
-    Game.currentPlayer = player1;
+    game.currentPlayer = player1;
     resetGame();
   };
 
@@ -207,43 +228,43 @@ const Game = (() => {
     if (!playing) return;
     id = parseInt(cell.id);
 
-    if (GameBoard.availablePositions().includes(id)) {
+    if (board.availablePositions().includes(id)) {
 
-      GameBoard.placePiece(Game.currentPlayer.symbol, id);
-      DisplayController.updateCell(Game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
+      board.placePiece(game.currentPlayer.symbol, id);
+      DisplayController.updateCell(game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
 
       if (gameOver()) {
         return
       };
 
-      Game.currentPlayer = switchPlayers();
+      game.currentPlayer = switchPlayers();
 
-      if (Game.player2.isCPU && Game.player2.checkIfTurn()) {
-          Game.player2.takeTurn();
+      if (game.player2.isCPU && game.player2.checkIfTurn()) {
+          game.player2.takeTurn();
       };
 
     };
   };
 
   function resetGame() {
-    GameBoard.clear();
+    board.clear();
     DisplayController.reset();
   }
 
-  const switchPlayers = () => (Game.currentPlayer === player1 ? Game.player2 : player1);
+  const switchPlayers = () => (game.currentPlayer === player1 ? game.player2 : player1);
 
   const gameWon = () => winningCombos.some((combo) => threeInARow(combo));
 
   function threeInARow(combo) {
-    return combo.every((i) => GameBoard.symbolAt(i) == Game.currentPlayer.symbol );
+    return combo.every((i) => board.symbolAt(i) == game.currentPlayer.symbol );
   };
 
   function gameOver() {
     if (gameWon()) {
-      DisplayController.declareWinner(Game.currentPlayer)
+      DisplayController.declareWinner(game.currentPlayer)
       playing = false;
       return true;
-    } else if (GameBoard.isFull()) {
+    } else if (board.isFull()) {
       DisplayController.declareTie();
       playing = false;
       return true;
@@ -251,7 +272,7 @@ const Game = (() => {
   };
 
   const winner = (player) => {
-    if (gameOver() && Game.currentPlayer == player) {
+    if (gameOver() && game.currentPlayer == player) {
       return true
     } else {
       return false
@@ -273,4 +294,8 @@ const Game = (() => {
     winner
   }
 
-})();
+});
+
+const board = GameBoard()
+const game = Game();
+
