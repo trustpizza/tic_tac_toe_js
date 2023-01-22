@@ -62,7 +62,7 @@ const easyComputerPlayer = (symbol) => {
     const availableMoves = gameBoard.availablePositions();
     const randomIndex = Math.floor(Math.random() * availableMoves.length);
     const move = availableMoves[randomIndex];
-    const cell = DisplayController.cells[move];
+    const cell = displayController.cells[move];
 
     game.takeTurn(cell);
   };
@@ -112,15 +112,37 @@ const hardComputerPlayer = (symbol) => {
           // bestScore = moves[i].score
           // bestMove = i
     // return moves[bestMove]
+    const winningCombos = game.winningCombos;
+    const isWinningState = () => {
+      winningCombos.some((combo) => threeInARow(combo));
 
-  }
+      function threeInARow(combo) {
+        if (combo.every((i) => gameBoard.symbolAt(i) == "X")) {
+          return "humanWin";
+        } else if (combo.every((i) => gameBoard.symbolAt(i) == "O")) {
+          return "computerWin";
+        }
+      };
+      return false;
+    };
+
+    const minimax = () => (newBoard, maximizingPlayer) {
+      availablePositions = [];
+
+      for (let i = 0; i < newBoard.length; i++) {
+        if (newBoard[i] === null) availablePositions.push(i);
+      };
+
+      
+    }
+  
 
   return {
     symbol
   }
 }
 
-const DisplayController = (() => {  // This only deals with the state of the board's look
+const displayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
     cell.addEventListener("click", () => game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
@@ -219,7 +241,7 @@ const game = ((board) => {
     if (gameBoard.availablePositions().includes(id)) {
 
       gameBoard.placePiece(game.currentPlayer.symbol, id);
-      DisplayController.updateCell(game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
+      displayController.updateCell(game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
 
       if (gameOver()) {
         return
@@ -236,7 +258,7 @@ const game = ((board) => {
 
   function resetGame() {
     gameBoard.clear();
-    DisplayController.reset();
+    displayController.reset();
   }
 
   const switchPlayers = () => (game.currentPlayer === player1 ? game.player2 : player1);
@@ -249,11 +271,11 @@ const game = ((board) => {
 
   function gameOver() {
     if (gameWon()) {
-      DisplayController.declareWinner(game.currentPlayer)
+      displayController.declareWinner(game.currentPlayer)
       playing = false;
       return true;
     } else if (gameBoard.isFull()) {
-      DisplayController.declareTie();
+      displayController.declareTie();
       playing = false;
       return true;
     };
