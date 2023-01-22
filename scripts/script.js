@@ -75,7 +75,12 @@ const easyComputerPlayer = (symbol) => {
     isCPU
   }
 };
-
+//
+//
+// HARD COMPUTER!
+//
+//
+//
 const hardComputerPlayer = (symbol) => {
   const isCPU = true;
 
@@ -88,16 +93,22 @@ const hardComputerPlayer = (symbol) => {
   const winningCombos = game.winningCombos;
 
   const isWinningState = (gameBoard) => {
-    winningCombos.some((combo) => threeInARow(combo));
-    
-    function threeInARow(combo) {
+    let response;
+    winningCombos.forEach(combo => {
       if (combo.every((i) => gameBoard[i] == "X")) {
+        response = "humanWin"
         return "humanWin";
       } else if (combo.every((i) => gameBoard[i] == "O")) {
+        response = "computerWin"
         return "computerWin";
       }
-    };
-    return false;
+    });
+
+    if ((response === "humanWin") || (response ==="computerWin")) {
+      return response
+    } else {
+      return false;
+    }
   };
 
   const minimax = (newBoard, maximizingPlayer) => {
@@ -171,7 +182,8 @@ const hardComputerPlayer = (symbol) => {
     isCPU,
     checkIfTurn,
     minimax,
-    isWinningState
+    isWinningState,
+    winningCombos
   }
 };
    
