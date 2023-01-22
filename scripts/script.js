@@ -33,6 +33,7 @@ const  gameBoard = (() => {
   }
 
   return {
+    boardArray,
     availablePositions,
     placePiece,
     symbolAt,
@@ -75,59 +76,42 @@ const easyComputerPlayer = (symbol) => {
 };
 
 const hardComputerPlayer = (symbol) => {
-  const availableMoves = gameBoard.availablePositions();
-  
-  function gameOver() {
-    if (game.gameOver() || DisplayController.isFull()) {
-      return true;
-    } else {
-      return false;
-    };
-  };
+  // Set winningCombos = reproduce the game's WinningCombos
+  // Write a function or method that determines if a given board state results in a win
+  // function minimax(gameBoard, maximizingPlayer)
+    // Available spots = []
+    // for i in availablespots { if newBoard[i].isNull availablespots.push(i)}
+  // if (winningState() -> human win 
+    // return {score:10} 
+  // else if winningState -> cPU win
+    // return {score -10}
+  // else if Tie return score:0
 
-  function score(game, depth) {
-    if (game.winner == player2) {
-      return 10 - depth;
-    } else if (game.winner == player1) {
-      return depth - 10;
-    } else {
-      return 0;
-    }
-  }
+  // let moves = []
+  // Loop through every index of the available spots 
+    // let move = {}
+    // move.index = available spots [i]
 
-  function minimax(game, depth) {
-    // USE gameBoard.placePiece()!!!!! This just places the spot on the gameBoard not on the actual display!
-    // USE game.gameWon()!!!! this does not alert!
-    if (gameOver()) {
-      return score(game);
-    };
-    depth--;
-    let scores = [];
-    let moves = [];
+    // if maximizingPlayer -> newBoard[available spots][i] = 1
+      // result = minimax(newBoard, !maximizingPlayer);
+      // move.score = result.score
+    // else newBoard[available spots][i] = -1
+      // result = minimax(newBoard, !maximizingPlayer);
+      // move.score = result.score
 
-    for (let i = 0; i < gameBoard.availablePositions().length; i++) {
-      const element = gameBoard.availablePositions()[i];
-      let newBoard = Board();
-      let newGame = Game(newBoard);
-      
-      
-    }
-
-    // Make the depth be equal to the ammount of available moves left
-    // Return the score if the game is over
-    // Increase the depth by 1
-    // Create an empty array of scores for that will accumulate a score at each depth;
-    // Create an array of possible moves
-    // if maximizing player(i.e. player2) then 
-      // value = - infinit
-        // Look at each child of the node (i.e. each next possible gamestate) and minimax(game, depth - 1, FALSE)
-      // add Value to scores array
-
-    // else (i.e minimizing player/ it is player1's turn) then
-      // value = score(game, depth)
-        // Look at each of the child nodes and minimax(game, depth -1, TRUE)
-      // add the value to the scores array
-
+    // create a bestMove variable
+    // if (maximizingPlayer)
+      // let bestScore = - infinity
+      // for (i in moves.length )
+        // if moves[i] > bestScore
+          // bestScore = moves[i].score
+          // bestMove = i
+    // else 
+      // le bestScore = infinity
+        // for i in moves.length
+          // bestScore = moves[i].score
+          // bestMove = i
+    // return moves[bestMove]
 
   }
 
