@@ -1,4 +1,4 @@
-const  GameBoard = (() => {
+const  gameBoard = (() => {
   "use strict";
   
   const boardArray = Array(9).fill(null);
@@ -48,22 +48,22 @@ const HumanPlayer = (symbol) => {
 }
 
 const EasyComputerPlayer = (symbol) => {
-  // If Game.currentPlayer == self, then take a random entry from GameBoard.availableMoves();
+  // If game.currentPlayer == self, then take a random entry from gameBoard.availableMoves();
   const isCPU = true;
 
   const checkIfTurn = () => {
-    if (Game.currentPlayer === Game.player2) {
+    if (game.currentPlayer === game.player2) {
       return true
     };
   };
 
   const takeTurn = () => {
-    const availableMoves = GameBoard.availablePositions();
+    const availableMoves = gameBoard.availablePositions();
     const randomIndex = Math.floor(Math.random() * availableMoves.length);
     const move = availableMoves[randomIndex];
     const cell = DisplayController.cells[move];
 
-    Game.takeTurn(cell);
+    game.takeTurn(cell);
   };
 
   return {
@@ -75,10 +75,10 @@ const EasyComputerPlayer = (symbol) => {
 };
 
 const HardComputerPlayer = (symbol) => {
-  const availableMoves = GameBoard.availablePositions();
+  const availableMoves = gameBoard.availablePositions();
   
   function gameOver() {
-    if (Game.gameOver() || DisplayController.isFull()) {
+    if (game.gameOver() || DisplayController.isFull()) {
       return true;
     } else {
       return false;
@@ -86,9 +86,9 @@ const HardComputerPlayer = (symbol) => {
   };
 
   function score(game, depth) {
-    if (Game.winner == player2) {
+    if (game.winner == player2) {
       return 10 - depth;
-    } else if (Game.winner == player1) {
+    } else if (game.winner == player1) {
       return depth - 10;
     } else {
       return 0;
@@ -96,8 +96,8 @@ const HardComputerPlayer = (symbol) => {
   }
 
   function minimax(game, depth) {
-    // USE GameBoard.placePiece()!!!!! This just places the spot on the GameBoard not on the actual display!
-    // USE Game.gameWon()!!!! this does not alert!
+    // USE gameBoard.placePiece()!!!!! This just places the spot on the gameBoard not on the actual display!
+    // USE game.gameWon()!!!! this does not alert!
     if (gameOver()) {
       return score(game);
     };
@@ -105,8 +105,8 @@ const HardComputerPlayer = (symbol) => {
     let scores = [];
     let moves = [];
 
-    for (let i = 0; i < GameBoard.availablePositions().length; i++) {
-      const element = GameBoard.availablePositions()[i];
+    for (let i = 0; i < gameBoard.availablePositions().length; i++) {
+      const element = gameBoard.availablePositions()[i];
       let newBoard = Board();
       let newGame = Game(newBoard);
       
@@ -139,7 +139,7 @@ const HardComputerPlayer = (symbol) => {
 const DisplayController = (() => {  // This only deals with the state of the board's look
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell) => {
-    cell.addEventListener("click", () => Game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
+    cell.addEventListener("click", () => game.takeTurn(cell)) // Add some function which changes the inner html which will exist in the Game 
   });
 
   const announcementContainer = document.getElementById("announcement-container")
@@ -147,13 +147,13 @@ const DisplayController = (() => {  // This only deals with the state of the boa
 
   const startButton = document.getElementById("start-button");
   startButton.addEventListener("click", () => {
-    Game.play() 
+    game.play() 
   });
 
   const opponentSelectionSection = document.getElementsByName('player-selection');
   opponentSelectionSection.forEach((selection) => {
       selection.addEventListener("click", () => {
-          Game.setPlayer2(selection.value);
+          game.setPlayer2(selection.value);
       });
   });
 
@@ -198,7 +198,7 @@ const DisplayController = (() => {  // This only deals with the state of the boa
   };
 })();
 
-const Game = ((board) => {
+const game = ((board) => {
   const player1 = HumanPlayer('X');
   let player2;
 
@@ -213,18 +213,18 @@ const Game = ((board) => {
   
   const setPlayer2 = (value) => {   
     if (value === "human") {
-      Game.player2 = HumanPlayer('O');
+      game.player2 = HumanPlayer('O');
     } else if (value === 'easy-computer') {
-      Game.player2 = EasyComputerPlayer('O');
+      game.player2 = EasyComputerPlayer('O');
     } else if (value === 'hard-computer') {
       console.log(value)
-      Game.player2 = HardComputerPlayer('O')
+      game.player2 = HardComputerPlayer('O')
     }
   }
 
   function play() {
     playing = true;
-    Game.currentPlayer = player1;
+    game.currentPlayer = player1;
     resetGame();
   };
 
@@ -232,43 +232,43 @@ const Game = ((board) => {
     if (!playing) return;
     id = parseInt(cell.id);
 
-    if (GameBoard.availablePositions().includes(id)) {
+    if (gameBoard.availablePositions().includes(id)) {
 
-      GameBoard.placePiece(Game.currentPlayer.symbol, id);
-      DisplayController.updateCell(Game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
+      gameBoard.placePiece(game.currentPlayer.symbol, id);
+      DisplayController.updateCell(game.currentPlayer.symbol, id) // Update the inner HTML of the cell in question
 
       if (gameOver()) {
         return
       };
 
-      Game.currentPlayer = switchPlayers();
+      game.currentPlayer = switchPlayers();
 
-      if (Game.player2.isCPU && Game.player2.checkIfTurn()) {
-          Game.player2.takeTurn();
+      if (game.player2.isCPU && game.player2.checkIfTurn()) {
+          game.player2.takeTurn();
       };
 
     };
   };
 
   function resetGame() {
-    GameBoard.clear();
+    gameBoard.clear();
     DisplayController.reset();
   }
 
-  const switchPlayers = () => (Game.currentPlayer === player1 ? Game.player2 : player1);
+  const switchPlayers = () => (game.currentPlayer === player1 ? game.player2 : player1);
 
   const gameWon = () => winningCombos.some((combo) => threeInARow(combo));
 
   function threeInARow(combo) {
-    return combo.every((i) => GameBoard.symbolAt(i) == Game.currentPlayer.symbol );
+    return combo.every((i) => gameBoard.symbolAt(i) == game.currentPlayer.symbol );
   };
 
   function gameOver() {
     if (gameWon()) {
-      DisplayController.declareWinner(Game.currentPlayer)
+      DisplayController.declareWinner(game.currentPlayer)
       playing = false;
       return true;
-    } else if (GameBoard.isFull()) {
+    } else if (gameBoard.isFull()) {
       DisplayController.declareTie();
       playing = false;
       return true;
@@ -276,7 +276,7 @@ const Game = ((board) => {
   };
 
   const winner = (player) => {
-    if (gameOver() && Game.currentPlayer == player) {
+    if (gameOver() && game.currentPlayer == player) {
       return true
     } else {
       return false
