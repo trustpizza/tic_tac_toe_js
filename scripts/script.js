@@ -90,9 +90,9 @@ const hardComputerPlayer = (symbol) => {
       winningCombos.some((combo) => threeInARow(combo));
       
       function threeInARow(combo) {
-        if (combo.every((i) => gameBoard.symbolAt(i) == "X")) {
+        if (combo.every((i) => gameBoard[i] == "X")) {
           return "humanWin";
-        } else if (combo.every((i) => gameBoard.symbolAt(i) == "O")) {
+        } else if (combo.every((i) => gameBoard[i] == "O")) {
           return "computerWin";
         }
       };
@@ -110,8 +110,9 @@ const hardComputerPlayer = (symbol) => {
         return {score: 10};
       } else if (isWinningState(newBoard) === "computerWin") {
         return {score: -10};
-      } else if (newBoard.includes(null)) {
-        return {score: 0};
+      } else if (!newBoard.includes(null)) {
+        console.log(0)
+        return 0;
       };
 
       let moves = [];
@@ -120,12 +121,13 @@ const hardComputerPlayer = (symbol) => {
         move.index = availablePositions[i];
         
         if (maximizingPlayer) {
-          newBoard[availablePositions][i] = "X";
+          newBoard[availablePositions[i]] = "X";
           let result = minimax(newBoard, !maximizingPlayer);
           move.score = result.score;
         } else {
-          newBoard[availablePositions][i] = "Y";
+          newBoard[availablePositions[i]] = "Y";
           let result = minimax(newBoard, !maximizingPlayer);
+          console.log(result)
           move.score = result.score;
         };
 
@@ -155,16 +157,18 @@ const hardComputerPlayer = (symbol) => {
     };
     
   const takeTurn = () => {
-    const index = minimax(gameBoard.boardArray, false).index;
-    const cell = displayController.cells[index];
-    game.takeTurn(cell);
+    const index = minimax(gameBoard.boardArray, false);
+    console.log(index)
+    //const cell = displayController.cells[index];
+    //game.takeTurn(cell);
   }
 
   return {
     symbol,
     takeTurn,
     isCPU,
-    checkIfTurn
+    checkIfTurn,
+    minimax
   }
 }
 
