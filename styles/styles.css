@@ -142,6 +142,8 @@ table {
   .game-container {
     width: 200px;
     height: 200px;
+    min-height: 0;
+    min-width: 0;
   };
 
   .game-container > * {
@@ -149,6 +151,8 @@ table {
 
   .cell {
     font-size: 16pt;
+    overflow: hidden;
+    min-width: 0;
   }
 
   #player-selection {
