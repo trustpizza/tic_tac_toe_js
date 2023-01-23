@@ -118,19 +118,9 @@ h1 {
   font-size: 48pt;
 }
 
-.start {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
 #player-selection {
   font-size: 18pt;
 }
-
-
 
 td {
   width: 100px;
@@ -146,4 +136,28 @@ table {
 .hori {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
+}
+
+@media screen and (max-width: 600px) {
+  .game-container {
+    width: 200px;
+    height: 200px;
+  };
+
+  .game-container > * {
+  }
+
+  .cell {
+    font-size: 18pt;
+  }
+
+  #player-selection {
+    gap: 5px;
+  }
+  
+  .btn {
+    color: #fff;
+    font-size: 20pt;
+    padding: 2px 8px;
+  }
 }

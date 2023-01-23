@@ -198,7 +198,7 @@ const displayController = (() => {  // This only deals with the state of the boa
 
   const declareTie = () => {
     announcementContainer.classList.add("visible");
-    announcementDiv.textContent = `Its a tie!`;
+    announcementDiv.textContent = `Tie!`;
 
     announcementContainer.addEventListener("click", () => {
       announcementContainer.classList.remove("visible")
