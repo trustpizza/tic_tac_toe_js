@@ -107,6 +107,7 @@ h1 {
 }
 
 #announcement {
+  text-align: center;
   height: 40vh;
   width: 50vw;
   display: flex;
@@ -120,22 +121,6 @@ h1 {
 
 #player-selection {
   font-size: 18pt;
-}
-
-td {
-  width: 100px;
-  height: 100px;
-}
-table {
-  margin: 5px auto;
-}
-.vert {
-  border-left: 2px solid black;
-  border-right: 2px solid black;
-}
-.hori {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
 }
 
 @media screen and (max-width: 600px) {
